@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,10 +21,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Cyan
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.myapplication1.ui.theme.MyApplication1Theme
 
 class MainActivity : ComponentActivity() {
@@ -36,10 +49,12 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
             ){
+                customText()
+                Picture()
               Text(text="Texto simple")
-                ModifierExample()
-                ModifierExample2()
-                ModifierExample3()
+                //ModifierExample()
+                //ModifierExample2()
+                //ModifierExample3()
             }
                 //Layouts
                 /*Column(modifier = Modifier.fillMaxSize()) {
@@ -73,7 +88,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MyApplication1Theme {
@@ -121,5 +136,40 @@ fun ModifierExample3(){
         Text(text = "Texto 3")
         Text(text = "Texto 4")
         Text(text = "Texto 5")
+    }
+}*/
+
+@Preview(showBackground = true)
+@Composable
+fun customText(){
+
+    Column {
+        Text(
+            stringResource(R.string.hello_world_text),
+            color = colorResource(R.color.teal_700),
+            fontSize = 28.sp,
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.ExtraBold,
+        )
+        val gradientColors= listOf(Cyan,Blue)
+        Text(
+            stringResource(R.string.hello_world_text),
+            style = TextStyle(brush = Brush.linearGradient(colors=gradientColors))
+        )
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun Picture() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.DarkGray)
+    ) {
+        Image(
+            painter = painterResource(R.drawable.covenant),
+            contentDescription = "Una imagen del covenant",
+            contentScale = ContentScale.Fit
+        )
     }
 }
