@@ -16,7 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,6 +38,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineBreak
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,40 +51,46 @@ class MainActivity : ComponentActivity() {
         //enableEdgeToEdge()
         setContent {
             Column(
-                modifier =Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())  // Habilita el scroll
+                    .fillMaxWidth()  // Llena el ancho pero deja que la altura se ajuste al contenido
+                    .padding(16.dp),  // Un padding opcional
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-            ){
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
                 customText()
                 Picture()
-              Text(text="Texto simple")
+                Text(text = "Texto simple")
                 //ModifierExample()
                 //ModifierExample2()
                 //ModifierExample3()
+                Content1()
+                horizontalCard()
             }
-                //Layouts
-                /*Column(modifier = Modifier.fillMaxSize()) {
-                    Text(text = "First Row")
-                    Text(text = "Second Row")
-                    Text(text = "Third Row")
-                    Text(text = "Fourth Row")
-                    Row {
-                        Text(text = "HOLA 1")
-                        Text(text = "HOLA 2")
-                        Text(text = "HOLA 3")
-                        Text(text = "HOLA 4")
-                    }
-                    Box {
-                        Text(text = "Label 1")
-                        Text(text = "Label 2")
-                        Text(text = "Label 3")
-                    }
-                    Greeting(name = "Hello World")
-                }*/
+            //Layouts
+            /*Column(modifier = Modifier.fillMaxSize()) {
+                Text(text = "First Row")
+                Text(text = "Second Row")
+                Text(text = "Third Row")
+                Text(text = "Fourth Row")
+                Row {
+                    Text(text = "HOLA 1")
+                    Text(text = "HOLA 2")
+                    Text(text = "HOLA 3")
+                    Text(text = "HOLA 4")
+                }
+                Box {
+                    Text(text = "Label 1")
+                    Text(text = "Label 2")
+                    Text(text = "Label 3")
+                }
+                Greeting(name = "Hello World")
+            }*/
 
         }
     }
 }
+
 //Cada compouse es un componente visual
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -141,7 +153,7 @@ fun ModifierExample3(){
 
 @Preview(showBackground = true)
 @Composable
-fun customText(){
+fun customText() {
 
     Column {
         Text(
@@ -151,13 +163,14 @@ fun customText(){
             fontStyle = FontStyle.Italic,
             fontWeight = FontWeight.ExtraBold,
         )
-        val gradientColors= listOf(Cyan,Blue)
+        val gradientColors = listOf(Cyan, Blue)
         Text(
             stringResource(R.string.hello_world_text),
-            style = TextStyle(brush = Brush.linearGradient(colors=gradientColors))
+            style = TextStyle(brush = Brush.linearGradient(colors = gradientColors))
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun Picture() {
@@ -171,5 +184,93 @@ fun Picture() {
             contentDescription = "Una imagen del covenant",
             contentScale = ContentScale.Fit
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Content1() {
+    Card(
+        modifier = Modifier
+            .background(Color.Red)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        Row {
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp),
+                painter = painterResource(id = R.drawable.covenant), contentDescription = "Card Logo",
+                contentScale = ContentScale.Fit
+            )
+
+
+        }
+        Text(
+            text = "Este es el titulo",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(15.dp)
+        )
+        Text(
+            stringResource(id = R.string.lorem),
+            textAlign = TextAlign.Justify,
+            lineHeight = 10.sp,
+            modifier = Modifier
+                .padding(10.dp)
+        )
+
+
+
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun horizontalCard() {
+    Card(
+        modifier = Modifier
+            .background(Color.Red)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Image(
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(100.dp)
+                    .align(Alignment.CenterVertically),
+                painter = painterResource(id = R.drawable.covenant),
+                contentDescription = "Card Logo",
+                contentScale = ContentScale.Fit
+            )
+
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "Este es el título",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                Text(
+                    stringResource(id = R.string.lorem),
+                    textAlign = TextAlign.Justify,
+                    lineHeight = 18.sp,
+                    modifier = Modifier
+                )
+            }
+        }
     }
 }
