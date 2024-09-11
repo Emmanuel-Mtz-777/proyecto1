@@ -51,7 +51,21 @@ import com.example.myapplication1.ui.theme.MyApplication1Theme
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.myapplication1.ui.theme.screens.HomeScreen
+import com.example.myapplication1.ui.theme.screens.MenuScreen
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+
+
+
 
 
 class MainActivity : ComponentActivity() {
@@ -59,7 +73,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContent {
-            Column(
+            ComposeMultisCreenApp()
+
+
+         /*   Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())  // Habilita el scroll
                     .fillMaxWidth()  // Llena el ancho pero deja que la altura se ajuste al contenido
@@ -96,20 +113,20 @@ class MainActivity : ComponentActivity() {
                     Text(text = "Label 3")
                 }
                 Greeting(name = "Hello World")
-            }*/
+            }*/*/
 
         }
     }
 }
 
 //Cada compouse es un componente visual
-@Composable
+/*@Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier
     )
-}
+}*/
 
 /*@Preview(showBackground = true)
 @Composable
@@ -162,7 +179,7 @@ fun ModifierExample3(){
     }
 }*/
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun customText() {
 
@@ -354,5 +371,28 @@ fun boxExample2() {
         Text(text = "Bottom Start", Modifier.align(Alignment.BottomStart))
         Text(text = "Bottom End", Modifier.align(Alignment.BottomEnd))
         Text(text = "Bottom Center", Modifier.align(Alignment.BottomCenter))
+    }
+}*/
+
+@Composable
+fun ComposeMultisCreenApp(){
+    val navController = rememberNavController()
+    Surface(color = Color.White) {
+    SetupNavGraph(navController =navController)
+    }
+}
+
+@Composable
+fun SetupNavGraph(navController: NavHostController) {
+    NavHost(
+        navController = navController,
+        startDestination = "menu"
+    ) {
+        composable("menu") {
+            MenuScreen(navController)
+        }
+        composable("home") {
+            HomeScreen(navController)
+        }
     }
 }
