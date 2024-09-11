@@ -17,10 +17,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,6 +48,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication1.ui.theme.MyApplication1Theme
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material3.Icon
+import androidx.compose.ui.layout.VerticalAlignmentLine
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +75,8 @@ class MainActivity : ComponentActivity() {
                 //ModifierExample3()
                 Content1()
                 horizontalCard()
+                boxExample()
+                boxExample2()
             }
             //Layouts
             /*Column(modifier = Modifier.fillMaxSize()) {
@@ -240,7 +251,8 @@ fun horizontalCard() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(5.dp)
+                .background(Color.Black)
         ) {
             Image(
                 modifier = Modifier
@@ -256,6 +268,8 @@ fun horizontalCard() {
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .fillMaxWidth()
+                    .background(Color.White)
+
             ) {
                 Text(
                     text = "Este es el título",
@@ -265,12 +279,80 @@ fun horizontalCard() {
                 )
 
                 Text(
-                    stringResource(id = R.string.lorem),
+                    text = stringResource(id = R.string.lorem),
                     textAlign = TextAlign.Justify,
                     lineHeight = 18.sp,
+                    maxLines = 7,
                     modifier = Modifier
                 )
             }
         }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun boxExample() {
+    Box(
+        modifier = Modifier
+            .background(colorResource(id = R.color.teal_700))
+            .fillMaxWidth()
+            .padding(5.dp)
+
+
+
+    ) {
+        Image(
+            painter = painterResource(id =R.drawable.cipher),
+            contentDescription = "Foto del covenant",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopStart) // Alinea el Row en la parte inferior central del Box
+                .fillMaxWidth()
+                .padding(0.dp, 10.dp),
+            horizontalArrangement = Arrangement.Center // Alinea el contenido del Row en el centro
+        ) {
+            Icon(
+                imageVector = Icons.Filled.AddCircle,
+                contentDescription = "Probando Iconos",
+                modifier = Modifier
+
+                    .padding(5.dp, 0.dp),
+                tint = Color.White
+            )
+            Text(
+                text = "Icono",
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp, 0.dp),
+                color = Color.White
+            )
+        }
+
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun boxExample2() {
+    Box(
+        modifier = Modifier
+            .background(Color.DarkGray)
+            .padding(5.dp)
+            .size(250.dp)
+    ) {
+        Text(text = "Top Start", Modifier.align(Alignment.TopStart))
+        Text(text = "Top End", Modifier.align(Alignment.TopEnd))
+        Text(text = "Top Center", Modifier.align(Alignment.TopCenter))
+        Text(text = "Center Start", Modifier.align(Alignment.CenterStart))
+        Text(text = "Center", Modifier.align(Alignment.Center))
+        Text(text = "Center End", Modifier.align(Alignment.CenterEnd))
+        Text(text = "Bottom Start", Modifier.align(Alignment.BottomStart))
+        Text(text = "Bottom End", Modifier.align(Alignment.BottomEnd))
+        Text(text = "Bottom Center", Modifier.align(Alignment.BottomCenter))
     }
 }
