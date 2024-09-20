@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="darkSteam">#141c24</color>
+    <color name="darkSteam2">#15232f</color>
+    <color name="darkSteam3">#1e3545</color>
+    <color name="darkSteam4">#3a4a5b</color>
+    <color name="navBar">#28282e</color>
+    <color name="steamFondo">  #1c344c  </color>
+    <color name="steam"> #233d5d   </color>
+    <color name="steamPromo">#256282 </color>
+    <color name="steamPromo2">  #2878a3  </color>
+    <color name="steamPromo3">  #6ea2ae  </color>
+    <color name ="promoBackground">#4c6d1c </color>
+    <color name ="promoPrice"> #aad915 </color>
 </resources>
