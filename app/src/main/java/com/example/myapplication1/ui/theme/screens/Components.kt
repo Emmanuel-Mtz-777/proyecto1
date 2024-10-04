@@ -1,12 +1,14 @@
 package com.example.myapplication1.ui.theme.screens
 
 
-import android.app.AlertDialog
+
 import android.graphics.drawable.Icon
+import androidx.benchmark.perfetto.Row
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,8 +25,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Badge
@@ -78,9 +84,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
@@ -217,6 +225,36 @@ fun ComponentsScreen(navController: NavController){
                             }
                         }
                     })
+                NavigationDrawerItem(label = { Text(text = "SnackBars")},
+                    selected = false,
+                    onClick = {
+                        component="SnackBars"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    })
+                NavigationDrawerItem(label = { Text(text = "AlertDialogs")},
+                    selected = false,
+                    onClick = {
+                        component="AlertDialogs"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    })
+                NavigationDrawerItem(label = { Text(text = "Bars")},
+                    selected = false,
+                    onClick = {
+                        component="Bars"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    })
             }
         }) {
         Column {
@@ -253,6 +291,15 @@ fun ComponentsScreen(navController: NavController){
                 }
                 "DatePickers"->{
                     DatePickers()
+                }
+                "SnackBars"->{
+                    SnackBars()
+                }
+                "AlertDialogs"->{
+                    AlertDialogs()
+                }
+                "Bars"->{
+                    Bars()
                 }
             }
 
@@ -660,3 +707,99 @@ fun convertMillisToDate(millis: Long): String {
     return formatter.format(Date(millis))
 }
 
+@Composable
+fun SnackBars() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        val snackState = remember{SnackbarHostState()}
+        val snackScope = rememberCoroutineScope()
+
+        SnackbarHost(hostState = snackState, Modifier)
+
+        fun launchSnackBar(){
+            snackScope.launch { snackState.showSnackbar("The message was sent") }
+        }
+        Button(::launchSnackBar){
+            Text("Show Snackbar")
+        }
+    }
+}
+
+@Composable
+fun AlertDialogs() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        var showAlertDialog by remember { mutableStateOf(false) }
+        var selectedOption by remember { mutableStateOf("") }
+
+        if (showAlertDialog) {
+            AlertDialog(
+                onDismissRequest = { showAlertDialog = false }, // Implement dismissal
+                icon = { Icon(Icons.Filled.Warning, contentDescription = "Warning icon") },
+                title = { Text(text = "Confirm Deletion") },
+                text = { Text(text = "Are you sure you want to delete the file?") },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            selectedOption = "Confirm"
+                            showAlertDialog = false
+                        }
+                    ) {
+                        Text(text = "Confirm")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            selectedOption = "Dismiss"
+                            showAlertDialog = false
+                        }
+                    ) {
+                        Text(text = "Dismiss")
+                    }
+                }
+            )
+        }
+
+        Text(selectedOption)
+        Button(onClick = { showAlertDialog = true }) {
+            Text("Show Alert Dialog")
+        }
+    }
+}
+
+
+
+@Composable
+fun Bars(){
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.DarkGray)
+    ){
+        Row (
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .background(Color.Black)
+                .padding(10.dp, 50.dp, 10.dp, 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Icon(Icons.Filled.Menu,
+                contentDescription = "",
+                tint = Color.White)
+            Text(text = "App Title",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp)
+            Icon(Icons.Filled.Settings,
+                contentDescription = "",
+                tint = Color.White)
+        }
+    }
+}
