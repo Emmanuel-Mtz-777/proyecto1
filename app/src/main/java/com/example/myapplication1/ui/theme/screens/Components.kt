@@ -242,6 +242,7 @@ fun ComponentScreen(navController: NavController) {
 //                        scope.launch {
 //                            drawerSate.apply {
 //                                close()
+                //Arreglando commit
 //                            }
 //                        }
 //                    }
