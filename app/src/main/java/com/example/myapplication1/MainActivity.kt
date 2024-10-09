@@ -1,5 +1,6 @@
 package com.example.myapplication1
 
+import ComponentScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -60,7 +61,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication1.ui.theme.screens.HomeScreen
 import com.example.myapplication1.ui.theme.screens.MenuScreen
-import com.example.myapplication1.ui.theme.screens.ComponentsScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -396,7 +396,7 @@ fun SetupNavGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable("components") {
-            ComponentsScreen(navController)
+            ComponentScreen(navController)
         }
     }
 }

@@ -1,3 +1,4 @@
+package com.example.myapplication1.data.model
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class MenuModel(

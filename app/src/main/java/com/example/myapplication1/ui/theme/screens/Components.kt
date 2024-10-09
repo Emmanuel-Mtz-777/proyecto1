@@ -1,7 +1,3 @@
-package com.example.myapplication1.ui.theme.screens
-
-
-import MenuModel
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.Button
@@ -21,6 +17,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -33,6 +32,11 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Call
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -49,6 +53,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.LargeFloatingActionButton
@@ -78,10 +83,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.myapplication1.R
+import com.example.myapplication1.data.model.MenuModel
+import com.example.myapplication1.data.model.PostModel
+import com.example.myapplication1.ui.theme.components.PostCard
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import java.util.Calendar
@@ -242,7 +252,6 @@ fun ComponentScreen(navController: NavController) {
 //                        scope.launch {
 //                            drawerSate.apply {
 //                                close()
-                //Arreglando commit
 //                            }
 //                        }
 //                    }
@@ -735,35 +744,144 @@ fun AlertDialogs() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Bars(){
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color.Blue)
+        .background(Color.DarkGray)
     ){
-        Row(
+        Row (
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
                 .background(Color.Black)
                 .padding(10.dp, 50.dp, 10.dp, 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
-        )
-        {
-            Icon(Icons.Filled.Menu, contentDescription = "", tint = Color.White)
-            Text(
-                text = "App title",
+        ){
+            Icon(Icons.Filled.Menu,
+                contentDescription = "",
+                tint = Color.White)
+            Text(text = "App Title",
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(10.dp)
-
-            )
-            Icon(Icons.Filled.Settings, contentDescription = "", tint = Color.White)
-
+                fontSize = 20.sp)
+            Icon(Icons.Filled.Settings,
+                contentDescription = "",
+                tint = Color.White)
+        }
+        var post = arrayOf(
+            PostModel(1,"Tittle 1", "Text 1", painterResource(R.drawable.cipher)),
+            PostModel(2,"Tittle 2", "Text 2", painterResource(R.drawable.cipher)),
+            PostModel(3,"Tittle 3", "Text 3", painterResource(R.drawable.cipher)),
+            PostModel(4,"Tittle 4", "Text 4", painterResource(R.drawable.cipher)),
+            PostModel(5,"Tittle 5", "Text 5", painterResource(R.drawable.cipher)),
+            PostModel(6,"Tittle 6", "Text 6", painterResource(R.drawable.cipher)),
+            PostModel(7,"Tittle 7", "Text 7", painterResource(R.drawable.cipher)),
+            PostModel(8,"Tittle 8", "Text 8", painterResource(R.drawable.cipher)),
+            PostModel(9,"Tittle 9", "Text 9", painterResource(R.drawable.cipher)),
+            PostModel(10,"Tittle 10", "Text 10", painterResource(R.drawable.cipher)),
+        )
+        Column (
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(10.dp, 90.dp, 10.dp, 50.dp)
+                .fillMaxSize()
+        ){
+            PostGrid(post)
+            //Posts(post)
+            // PostCard(id = 1, title = "This is a Card",
+            //  text = "This is the Text Card", image = painterResource(R.drawable.android))
         }
 
+        Row (
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .fillMaxWidth()
+                .height(65.dp)
+                .background(Color.Black)
+                .padding(2.dp, 5.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ){
+            Column (){
+                IconButton(onClick = {},
+                    modifier = Modifier.size(30.dp)) {
+                    Icon(Icons.Outlined.Home, contentDescription = "",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+                Text(text = "Home", color = Color.White)
+            }
+            Column (){
+                IconButton(onClick = {},
+                    modifier = Modifier.size(30.dp)) {
+                    Icon(Icons.Outlined.Call, contentDescription = "",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+                Text(text = "Call", color = Color.White)
+            }
+            Column (){
+                IconButton(onClick = {},
+                    modifier = Modifier.size(30.dp)) {
+                    Icon(Icons.Outlined.AccountCircle, contentDescription = "",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+                Text(text = "Account", color = Color.White)
+            }
+            Column (){
+                IconButton(onClick = {},
+                    modifier = Modifier.size(30.dp)) {
+                    Icon(Icons.Outlined.Face, contentDescription = "",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+                Text(text = "Friends", color = Color.White)
+            }
+            Column (){
+                IconButton(onClick = {},
+                    modifier = Modifier.size(30.dp)) {
+                    Icon(Icons.Outlined.Settings, contentDescription = "",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    )
+                }
+                Text(text = "Settings", color = Color.White)
+            }
+        }
     }
+}
 
+@Composable
+fun Posts(arrayPosts: Array<PostModel>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        items(arrayPosts){ post->
+            PostCard(post.id, post.title, post.text, post.image)
+        }
+    }
+}
+
+@Composable
+fun PostGrid(arrayPosts: Array<PostModel>){
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 128.dp),
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        items(arrayPosts) { post->
+            PostCard(post.id, post.title, post.text, post.image)
+        }
+    }
 }
