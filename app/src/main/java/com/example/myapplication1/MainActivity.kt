@@ -1,5 +1,6 @@
 package com.example.myapplication1
 
+import ComponentScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -393,6 +394,9 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         composable("home") {
             HomeScreen(navController)
+        }
+        composable("components") {
+            ComponentScreen(navController)
         }
     }
 }
