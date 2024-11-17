@@ -62,6 +62,14 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.adaptive.android)
+
+    implementation ("androidx.compose.ui:ui:1.7.5")
+    implementation ("androidx.compose.material:material:1.7.5")
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.7.5")
+    implementation ("androidx.activity:activity-compose:1.7.2")
+    debugImplementation ("androidx.compose.ui:ui-tooling:1.7.5")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
