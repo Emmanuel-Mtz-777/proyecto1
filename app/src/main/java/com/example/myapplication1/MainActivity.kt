@@ -66,9 +66,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 
-
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -387,7 +384,7 @@ fun ComposeMultisCreenApp(){
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "menu"
+        startDestination = "camera"
     ) {
         composable("menu") {
             MenuScreen(navController)
@@ -398,5 +395,6 @@ fun SetupNavGraph(navController: NavHostController) {
         composable("components") {
             ComponentScreen(navController)
         }
+
     }
 }
