@@ -2,6 +2,7 @@ package com.example.myapplication1
 
 import ComponentScreen
 import android.os.Bundle
+import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
@@ -12,39 +13,32 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication1.ui.theme.screens.HomeScreen
 import com.example.myapplication1.ui.theme.screens.MenuScreen
+import com.example.myapplication1.ui.theme.screens.CameraScreen
 import androidx.navigation.NavHostController
-
-
-
-
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         setContent {
-            ComposeMultisCreenApp()
-
+            ComposeMultisCreenApp(this)  // Pasamos el contexto aquí
         }
     }
 }
 
-
-
 @Composable
-fun ComposeMultisCreenApp(){
+fun ComposeMultisCreenApp(context: Context){
     val navController = rememberNavController()
     Surface(color = Color.White) {
-    SetupNavGraph(navController =navController)
+        SetupNavGraph(navController = navController, context = context)  // Pasamos el contexto aquí
     }
 }
 
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
+fun SetupNavGraph(navController: NavHostController, context: Context) {
     NavHost(
         navController = navController,
-        startDestination = "menu"
+        startDestination = "camera"
     ) {
         composable("menu") {
             MenuScreen(navController)
@@ -54,6 +48,9 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         composable("components") {
             ComponentScreen(navController)
+        }
+        composable("camera") {
+            CameraScreen(navController, context)
         }
     }
 }

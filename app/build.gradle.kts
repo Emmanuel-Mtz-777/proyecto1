@@ -62,6 +62,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.adaptive.android)
+
+    implementation("io.coil-kt:coil-compose:2.0.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
