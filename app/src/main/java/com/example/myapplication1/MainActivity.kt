@@ -1,402 +1,350 @@
+
 package com.example.myapplication1
 
-import ComponentScreen
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Cyan
-import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineBreak
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.myapplication1.ui.theme.MyApplication1Theme
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.internal.composableLambda
-import androidx.compose.ui.layout.VerticalAlignmentLine
-import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.myapplication1.ui.theme.screens.HomeScreen
-import com.example.myapplication1.ui.theme.screens.MenuScreen
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-
-
-
-
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.myapplication1.ui.theme.components.Reminder
+import com.example.myapplication1.ui.theme.components.ReminderViewModel
+import com.example.myapplication1.ui.theme.components.NotificationWorker
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : ComponentActivity() {
+    private val NOTIFICATION_PERMISSION_REQUEST_CODE = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
+        enableEdgeToEdge()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission()
+        }
+
         setContent {
-            ComposeMultisCreenApp()
+            ReminderApp()
+        }
+    }
 
-
-         /*   Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())  // Habilita el scroll
-                    .fillMaxWidth()  // Llena el ancho pero deja que la altura se ajuste al contenido
-                    .padding(16.dp),  // Un padding opcional
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Para Android 13 y superior
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                NOTIFICATION_PERMISSION_REQUEST_CODE // Define esta constante, por ejemplo como 100
+            )
+        } else {
+            // Para versiones anteriores a Android 13
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
             ) {
-                customText()
-                Picture()
-                Text(text = "Texto simple")
-                //ModifierExample()
-                //ModifierExample2()
-                //ModifierExample3()
-                Content1()
-                horizontalCard()
-                boxExample()
-                boxExample2()
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_REQUEST_CODE
+                )
             }
-            //Layouts
-            /*Column(modifier = Modifier.fillMaxSize()) {
-                Text(text = "First Row")
-                Text(text = "Second Row")
-                Text(text = "Third Row")
-                Text(text = "Fourth Row")
-                Row {
-                    Text(text = "HOLA 1")
-                    Text(text = "HOLA 2")
-                    Text(text = "HOLA 3")
-                    Text(text = "HOLA 4")
-                }
-                Box {
-                    Text(text = "Label 1")
-                    Text(text = "Label 2")
-                    Text(text = "Label 3")
-                }
-                Greeting(name = "Hello World")
-            }*/*/
+        }
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            NOTIFICATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Permiso concedido, puedes mostrar un mensaje o realizar alguna acción
+                    Toast.makeText(
+                        this,
+                        "Permiso de notificaciones concedido",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    // Permiso denegado, informa al usuario que las notificaciones no funcionarán
+                    Toast.makeText(
+                        this,
+                        "Las notificaciones están desactivadas",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 }
 
-//Cada compouse es un componente visual
-/*@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}*/
-
-/*@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GreetingPreview() {
-    MyApplication1Theme {
-        Greeting("Emmanuel")
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample(){
-    Column (modifier = Modifier
-        .padding(24.dp)){
-    Text(text = "Un texto con padding")
-    }
-}
+fun ReminderApp() {
+    val viewModel: ReminderViewModel = viewModel()
+    val reminders by viewModel.reminders.collectAsState()
+    var showDialog by remember { mutableStateOf(false) }
+    var showDatePicker by remember { mutableStateOf(false) }
+    var showTimePicker by remember { mutableStateOf(false) }
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var selectedDate by remember { mutableStateOf(Calendar.getInstance()) }
+    val context = LocalContext.current
 
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample2(){
-    Column (modifier = Modifier
-        .padding(24.dp)
-        .fillMaxWidth()
-        .clickable(onClick = { clickAction() })){
-        Text(text = "Un texto con padding")
-    }
-}
-
-fun clickAction(){
-    println("Columna clickeada")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample3(){
-    Column (modifier = Modifier
-        .fillMaxHeight()
-        .padding(24.dp)
-        .background(Color.LightGray)
-        .border(width = 2.dp, color = Color.Cyan)
-        .width(200.dp),
-
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly){
-        Text(text = "Texto con algo similar a css")
-        Text(text = "Texto 2")
-        Text(text = "Texto 3")
-        Text(text = "Texto 4")
-        Text(text = "Texto 5")
-    }
-}*/
-
-/*@Preview(showBackground = true)
-@Composable
-fun customText() {
-
-    Column {
-        Text(
-            stringResource(R.string.hello_world_text),
-            color = colorResource(R.color.teal_700),
-            fontSize = 28.sp,
-            fontStyle = FontStyle.Italic,
-            fontWeight = FontWeight.ExtraBold,
-        )
-        val gradientColors = listOf(Cyan, Blue)
-        Text(
-            stringResource(R.string.hello_world_text),
-            style = TextStyle(brush = Brush.linearGradient(colors = gradientColors))
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Picture() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.DarkGray)
-    ) {
-        Image(
-            painter = painterResource(R.drawable.covenant),
-            contentDescription = "Una imagen del covenant",
-            contentScale = ContentScale.Fit
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Content1() {
-    Card(
-        modifier = Modifier
-            .background(Color.Red)
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Row {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp),
-                painter = painterResource(id = R.drawable.covenant), contentDescription = "Card Logo",
-                contentScale = ContentScale.Fit
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Recordatorios") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
             )
-
-
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { showDialog = true }) {
+                Text("+")
+            }
         }
-        Text(
-            text = "Este es el titulo",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
+    ) { paddingValues ->
+        LazyColumn(
             modifier = Modifier
-                .padding(15.dp)
-        )
-        Text(
-            stringResource(id = R.string.lorem),
-            textAlign = TextAlign.Justify,
-            lineHeight = 10.sp,
-            modifier = Modifier
-                .padding(10.dp)
-        )
-
-
-
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun horizontalCard() {
-    Card(
-        modifier = Modifier
-            .background(Color.Red)
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp)
-                .background(Color.Black)
+                .padding(paddingValues)
+                .fillMaxSize()
         ) {
-            Image(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = R.drawable.covenant),
-                contentDescription = "Card Logo",
-                contentScale = ContentScale.Fit
+            // Lista de recordatorios
+            items(reminders) { reminder ->
+                ReminderItem(
+                    reminder = reminder,
+                    onDelete = { viewModel.deleteReminder(context, reminder) }
+                )
+            }
+        }
+
+        // agregar recordatorio
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Nuevo Recordatorio") },
+                text = {
+                    Column {
+                        TextField(
+                            value = title,
+                            onValueChange = { title = it },
+                            label = { Text("Título") }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        TextField(
+                            value = description,
+                            onValueChange = { description = it },
+                            label = { Text("Descripción") }
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        // Boton para mostrar DatePicker
+                        Button(
+                            onClick = { showDatePicker = true }
+                        ) {
+                            Text(
+                                "Seleccionar Fecha: ${
+                                    SimpleDateFormat(
+                                        "dd/MM/yyyy",
+                                        Locale.getDefault()
+                                    ).format(selectedDate.time)
+                                }"
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        // Boton para mostrar TimePicker
+                        Button(
+                            onClick = { showTimePicker = true }
+                        ) {
+                            Text(
+                                "Seleccionar Hora: ${
+                                    SimpleDateFormat(
+                                        "HH:mm",
+                                        Locale.getDefault()
+                                    ).format(selectedDate.time)
+                                }"
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        viewModel.addReminder(
+                            context,
+                            title,
+                            description,
+                            selectedDate.timeInMillis
+                        )
+                        title = ""
+                        description = ""
+                        showDialog = false
+                    }) {
+                        Text("Guardar")
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = { showDialog = false }) {
+                        Text("Cancelar")
+                    }
+                }
+            )
+        }
+
+        // DatePicker
+        if (showDatePicker) {
+            val datePickerState = rememberDatePickerState(
+                initialSelectedDateMillis = selectedDate.timeInMillis
             )
 
+            DatePickerDialog(
+                onDismissRequest = { showDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        datePickerState.selectedDateMillis?.let { dateMillis ->
+                            val newDate = Calendar.getInstance().apply {
+                                timeInMillis = dateMillis
+                            }
+                            selectedDate.set(
+                                newDate.get(Calendar.YEAR),
+                                newDate.get(Calendar.MONTH),
+                                newDate.get(Calendar.DAY_OF_MONTH)
+                            )
+                        }
+                        showDatePicker = false
+                    }) {
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDatePicker = false }) {
+                        Text("Cancelar")
+                    }
+                }
+            ) {
+                DatePicker(
+                    state = datePickerState,
+                    showModeToggle = false
+                )
+            }
+        }
+
+        // TimePicker
+        if (showTimePicker) {
+            TimePickerDialog(
+                onDismissRequest = { showTimePicker = false },
+                onConfirm = { hour, minute ->
+                    selectedDate.set(Calendar.HOUR_OF_DAY, hour)
+                    selectedDate.set(Calendar.MINUTE, minute)
+                    showTimePicker = false
+                }
+            )
+        }
+
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TimePickerDialog(
+    onDismissRequest: () -> Unit,
+    onConfirm: (Int, Int) -> Unit
+) {
+    val currentTime = Calendar.getInstance()
+
+    val timePickerState = rememberTimePickerState(
+        initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
+        initialMinute = currentTime.get(Calendar.MINUTE),
+        is24Hour = true
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text("Seleccionar hora") },
+        text = {
             Column(
                 modifier = Modifier
-                    .padding(start = 16.dp)
-                    .fillMaxWidth()
-                    .background(Color.White)
-
+                    .padding(top = 20.dp)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "Este es el título",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-
-                Text(
-                    text = stringResource(id = R.string.lorem),
-                    textAlign = TextAlign.Justify,
-                    lineHeight = 18.sp,
-                    maxLines = 7,
-                    modifier = Modifier
-                )
+                TimePicker(state = timePickerState)
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm(timePickerState.hour, timePickerState.minute) }
+            ) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text("Cancelar")
             }
         }
-    }
+    )
 }
-@Preview(showBackground = true)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun boxExample() {
-    Box(
+fun ReminderItem(reminder: Reminder, onDelete: () -> Unit) {
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+
+    Card(
         modifier = Modifier
-            .background(colorResource(id = R.color.teal_700))
-            .fillMaxWidth()
-            .padding(5.dp)
-
-
-
+            .padding(8.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Image(
-            painter = painterResource(id =R.drawable.cipher),
-            contentDescription = "Foto del covenant",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
-
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopStart) // Alinea el Row en la parte inferior central del Box
-                .fillMaxWidth()
-                .padding(0.dp, 10.dp),
-            horizontalArrangement = Arrangement.Center // Alinea el contenido del Row en el centro
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            Icon(
-                imageVector = Icons.Filled.AddCircle,
-                contentDescription = "Probando Iconos",
-                modifier = Modifier
-
-                    .padding(5.dp, 0.dp),
-                tint = Color.White
+            Text(
+                text = reminder.title,
+                style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = "Icono",
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp, 0.dp),
-                color = Color.White
+                text = reminder.description,
+                style = MaterialTheme.typography.bodyMedium
             )
-        }
-
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun boxExample2() {
-    Box(
-        modifier = Modifier
-            .background(Color.DarkGray)
-            .padding(5.dp)
-            .size(250.dp)
-    ) {
-        Text(text = "Top Start", Modifier.align(Alignment.TopStart))
-        Text(text = "Top End", Modifier.align(Alignment.TopEnd))
-        Text(text = "Top Center", Modifier.align(Alignment.TopCenter))
-        Text(text = "Center Start", Modifier.align(Alignment.CenterStart))
-        Text(text = "Center", Modifier.align(Alignment.Center))
-        Text(text = "Center End", Modifier.align(Alignment.CenterEnd))
-        Text(text = "Bottom Start", Modifier.align(Alignment.BottomStart))
-        Text(text = "Bottom End", Modifier.align(Alignment.BottomEnd))
-        Text(text = "Bottom Center", Modifier.align(Alignment.BottomCenter))
-    }
-}*/
-
-@Composable
-fun ComposeMultisCreenApp(){
-    val navController = rememberNavController()
-    Surface(color = Color.White) {
-    SetupNavGraph(navController =navController)
-    }
-}
-
-@Composable
-fun SetupNavGraph(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        startDestination = "menu"
-    ) {
-        composable("menu") {
-            MenuScreen(navController)
-        }
-        composable("home") {
-            HomeScreen(navController)
-        }
-        composable("components") {
-            ComponentScreen(navController)
+            Text(
+                text = dateFormat.format(Date(reminder.dateTime)),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Button(
+                onClick = onDelete,
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                Text("Eliminar")
+            }
         }
     }
 }
