@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.adaptive.android)
+
+    implementation("androidx.appcompat:appcompat:1.7.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

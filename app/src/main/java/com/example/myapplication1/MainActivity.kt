@@ -1,402 +1,326 @@
 package com.example.myapplication1
 
-import ComponentScreen
+
+import android.Manifest
+import android.content.ContentValues
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.provider.CalendarContract
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Cyan
-import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineBreak
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.myapplication1.ui.theme.MyApplication1Theme
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.internal.composableLambda
-import androidx.compose.ui.layout.VerticalAlignmentLine
-import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.myapplication1.ui.theme.screens.HomeScreen
-import com.example.myapplication1.ui.theme.screens.MenuScreen
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import java.text.SimpleDateFormat
+import java.util.*
 
-
-
-
-
+// Clase principal de la actividad
 class MainActivity : ComponentActivity() {
+    // Método onCreate que se llama al iniciar la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
+
+        // Configura el contenido de la actividad usando Jetpack Compose
         setContent {
-            ComposeMultisCreenApp()
+            // Variable que indica si los permisos han sido concedidos
+            var hasPermission by remember { mutableStateOf(false) }
 
-
-         /*   Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())  // Habilita el scroll
-                    .fillMaxWidth()  // Llena el ancho pero deja que la altura se ajuste al contenido
-                    .padding(16.dp),  // Un padding opcional
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                customText()
-                Picture()
-                Text(text = "Texto simple")
-                //ModifierExample()
-                //ModifierExample2()
-                //ModifierExample3()
-                Content1()
-                horizontalCard()
-                boxExample()
-                boxExample2()
+            // Configura el lanzador de permisos
+            val permissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestMultiplePermissions()
+            ) { permissions ->
+                // Verifica si todos los permisos requeridos fueron otorgados
+                hasPermission = permissions[Manifest.permission.READ_CONTACTS] == true &&
+                        permissions[Manifest.permission.READ_CALENDAR] == true &&
+                        permissions[Manifest.permission.WRITE_CALENDAR] == true
             }
-            //Layouts
-            /*Column(modifier = Modifier.fillMaxSize()) {
-                Text(text = "First Row")
-                Text(text = "Second Row")
-                Text(text = "Third Row")
-                Text(text = "Fourth Row")
-                Row {
-                    Text(text = "HOLA 1")
-                    Text(text = "HOLA 2")
-                    Text(text = "HOLA 3")
-                    Text(text = "HOLA 4")
-                }
-                Box {
-                    Text(text = "Label 1")
-                    Text(text = "Label 2")
-                    Text(text = "Label 3")
-                }
-                Greeting(name = "Hello World")
-            }*/*/
 
-        }
-    }
-}
-
-//Cada compouse es un componente visual
-/*@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}*/
-
-/*@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyApplication1Theme {
-        Greeting("Emmanuel")
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample(){
-    Column (modifier = Modifier
-        .padding(24.dp)){
-    Text(text = "Un texto con padding")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample2(){
-    Column (modifier = Modifier
-        .padding(24.dp)
-        .fillMaxWidth()
-        .clickable(onClick = { clickAction() })){
-        Text(text = "Un texto con padding")
-    }
-}
-
-fun clickAction(){
-    println("Columna clickeada")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample3(){
-    Column (modifier = Modifier
-        .fillMaxHeight()
-        .padding(24.dp)
-        .background(Color.LightGray)
-        .border(width = 2.dp, color = Color.Cyan)
-        .width(200.dp),
-
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly){
-        Text(text = "Texto con algo similar a css")
-        Text(text = "Texto 2")
-        Text(text = "Texto 3")
-        Text(text = "Texto 4")
-        Text(text = "Texto 5")
-    }
-}*/
-
-/*@Preview(showBackground = true)
-@Composable
-fun customText() {
-
-    Column {
-        Text(
-            stringResource(R.string.hello_world_text),
-            color = colorResource(R.color.teal_700),
-            fontSize = 28.sp,
-            fontStyle = FontStyle.Italic,
-            fontWeight = FontWeight.ExtraBold,
-        )
-        val gradientColors = listOf(Cyan, Blue)
-        Text(
-            stringResource(R.string.hello_world_text),
-            style = TextStyle(brush = Brush.linearGradient(colors = gradientColors))
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Picture() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.DarkGray)
-    ) {
-        Image(
-            painter = painterResource(R.drawable.covenant),
-            contentDescription = "Una imagen del covenant",
-            contentScale = ContentScale.Fit
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Content1() {
-    Card(
-        modifier = Modifier
-            .background(Color.Red)
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Row {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp),
-                painter = painterResource(id = R.drawable.covenant), contentDescription = "Card Logo",
-                contentScale = ContentScale.Fit
-            )
-
-
-        }
-        Text(
-            text = "Este es el titulo",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(15.dp)
-        )
-        Text(
-            stringResource(id = R.string.lorem),
-            textAlign = TextAlign.Justify,
-            lineHeight = 10.sp,
-            modifier = Modifier
-                .padding(10.dp)
-        )
-
-
-
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun horizontalCard() {
-    Card(
-        modifier = Modifier
-            .background(Color.Red)
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp)
-                .background(Color.Black)
-        ) {
-            Image(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = R.drawable.covenant),
-                contentDescription = "Card Logo",
-                contentScale = ContentScale.Fit
-            )
-
-            Column(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .fillMaxWidth()
-                    .background(Color.White)
-
-            ) {
-                Text(
-                    text = "Este es el título",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
+            // Efecto lanzado para solicitar permisos cuando se carga la pantalla
+            LaunchedEffect(Unit) {
+                permissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.WRITE_CALENDAR
+                    )
                 )
+            }
 
-                Text(
-                    text = stringResource(id = R.string.lorem),
-                    textAlign = TextAlign.Justify,
-                    lineHeight = 18.sp,
-                    maxLines = 7,
+            // Verifica si los permisos han sido otorgados para mostrar la pantalla correspondiente
+            if (hasPermission) {
+                AgendaScreen()
+            } else {
+                // Muestra un mensaje y un botón si los permisos no fueron concedidos
+                Column(
                     modifier = Modifier
-                )
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "Se necesitan permisos para acceder a los contactos y el calendario.")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = {
+                        // Solicita permisos nuevamente al presionar el botón
+                        permissionLauncher.launch(
+                            arrayOf(
+                                Manifest.permission.READ_CONTACTS,
+                                Manifest.permission.READ_CALENDAR,
+                                Manifest.permission.WRITE_CALENDAR
+                            )
+                        )
+                    }) {
+                        Text(text = "Solicitar permisos")
+                    }
+                }
             }
         }
     }
 }
-@Preview(showBackground = true)
+
+// Pantalla que permite seleccionar contactos y fechas para crear eventos
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun boxExample() {
-    Box(
-        modifier = Modifier
-            .background(colorResource(id = R.color.teal_700))
-            .fillMaxWidth()
-            .padding(5.dp)
+fun AgendaScreen() {
+    // Variables que almacenan el contacto y la fecha seleccionada
+    var selectedContact by remember { mutableStateOf("Selecciona un contacto") }
+    var selectedDate by remember { mutableStateOf("Selecciona una fecha") }
+    var selectedStartTime by remember { mutableStateOf("Selecciona hora de inicio") }
+    var selectedEndTime by remember { mutableStateOf("Selecciona hora de fin") }
 
+    // Obtiene el contexto actual y crea una variable para mostrar el diálogo de selección de contacto
+    val context = LocalContext.current
+    var showContactDialog by remember { mutableStateOf(false) }
 
+    // Obtiene la lista de contactos
+    val contacts = remember { fetchContacts(context) }
 
-    ) {
-        Image(
-            painter = painterResource(id =R.drawable.cipher),
-            contentDescription = "Foto del covenant",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
+    // Columna principal de la interfaz
+    Column(modifier = Modifier.padding(16.dp)) {
+        // Botón que muestra el contacto seleccionado
+        Button(onClick = { showContactDialog = true }) {
+            Text(text = selectedContact)
+        }
 
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopStart) // Alinea el Row en la parte inferior central del Box
-                .fillMaxWidth()
-                .padding(0.dp, 10.dp),
-            horizontalArrangement = Arrangement.Center // Alinea el contenido del Row en el centro
-        ) {
-            Icon(
-                imageVector = Icons.Filled.AddCircle,
-                contentDescription = "Probando Iconos",
-                modifier = Modifier
-
-                    .padding(5.dp, 0.dp),
-                tint = Color.White
-            )
-            Text(
-                text = "Icono",
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp, 0.dp),
-                color = Color.White
+        // Diálogo de selección de contactos
+        if (showContactDialog) {
+            AlertDialog(
+                onDismissRequest = { showContactDialog = false },
+                title = { Text("Selecciona un contacto") },
+                text = {
+                    LazyColumn {
+                        items(contacts) { contact ->
+                            TextButton(onClick = {
+                                // Al seleccionar un contacto, se actualiza el estado y se cierra el diálogo
+                                selectedContact = contact
+                                showContactDialog = false
+                            }) {
+                                Text(text = contact)
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = { showContactDialog = false }) {
+                        Text("Cancelar")
+                    }
+                }
             )
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Botón para seleccionar la fecha
+        Button(onClick = {
+            val currentDate = Calendar.getInstance()
+            val datePickerDialog = android.app.DatePickerDialog(
+                context,
+                { _, year, month, dayOfMonth ->
+                    selectedDate = "$dayOfMonth/${month + 1}/$year"
+                },
+                currentDate.get(Calendar.YEAR),
+                currentDate.get(Calendar.MONTH),
+                currentDate.get(Calendar.DAY_OF_MONTH)
+            )
+            datePickerDialog.show()
+        }) {
+            Text(text = selectedDate)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Botón para seleccionar la hora de inicio
+        Button(onClick = {
+            val currentTime = Calendar.getInstance()
+            val timePickerDialog = android.app.TimePickerDialog(
+                context,
+                { _, hourOfDay, minute ->
+                    selectedStartTime = String.format("%02d:%02d", hourOfDay, minute)
+                },
+                currentTime.get(Calendar.HOUR_OF_DAY),
+                currentTime.get(Calendar.MINUTE),
+                true // Formato de 24 horas
+            )
+            timePickerDialog.show()
+        }) {
+            Text(text = selectedStartTime)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Botón para seleccionar la hora de fin
+        Button(onClick = {
+            val currentTime = Calendar.getInstance()
+            val timePickerDialog = android.app.TimePickerDialog(
+                context,
+                { _, hourOfDay, minute ->
+                    selectedEndTime = String.format("%02d:%02d", hourOfDay, minute)
+                },
+                currentTime.get(Calendar.HOUR_OF_DAY),
+                currentTime.get(Calendar.MINUTE),
+                true
+            )
+            timePickerDialog.show()
+        }) {
+            Text(text = selectedEndTime)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Botón para guardar el evento en el calendario
+        Button(onClick = {
+            if (selectedContact != "Selecciona un contacto" &&
+                selectedDate != "Selecciona una fecha" &&
+                selectedStartTime != "Selecciona hora de inicio" &&
+                selectedEndTime != "Selecciona hora de fin") {
+
+                // Convierte la fecha y la hora en milisegundos
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val dateInMillis = dateFormat.parse(selectedDate)?.time
+
+                if (dateInMillis != null) {
+                    val (startHour, startMinute) = selectedStartTime.split(":").map { it.toInt() }
+                    val (endHour, endMinute) = selectedEndTime.split(":").map { it.toInt() }
+
+                    val startTimeInMillis = Calendar.getInstance().apply {
+                        timeInMillis = dateInMillis
+                        set(Calendar.HOUR_OF_DAY, startHour)
+                        set(Calendar.MINUTE, startMinute)
+                    }.timeInMillis
+
+                    val endTimeInMillis = Calendar.getInstance().apply {
+                        timeInMillis = dateInMillis
+                        set(Calendar.HOUR_OF_DAY, endHour)
+                        set(Calendar.MINUTE, endMinute)
+                    }.timeInMillis
+
+                    // Obtiene el ID del calendario y guarda el evento
+                    val calendarId = getCalendarId(context)
+                    if (calendarId != null) {
+                        saveEventToCalendar(context, selectedContact, startTimeInMillis, endTimeInMillis, calendarId)
+                    } else {
+                        Toast.makeText(context, "No se encontró un calendario local.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Error al convertir la fecha. Por favor, intenta de nuevo.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "Por favor, selecciona un contacto, una fecha y las horas.", Toast.LENGTH_SHORT).show()
+            }
+        }) {
+            Text("Guardar Evento")
+        }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun boxExample2() {
-    Box(
-        modifier = Modifier
-            .background(Color.DarkGray)
-            .padding(5.dp)
-            .size(250.dp)
-    ) {
-        Text(text = "Top Start", Modifier.align(Alignment.TopStart))
-        Text(text = "Top End", Modifier.align(Alignment.TopEnd))
-        Text(text = "Top Center", Modifier.align(Alignment.TopCenter))
-        Text(text = "Center Start", Modifier.align(Alignment.CenterStart))
-        Text(text = "Center", Modifier.align(Alignment.Center))
-        Text(text = "Center End", Modifier.align(Alignment.CenterEnd))
-        Text(text = "Bottom Start", Modifier.align(Alignment.BottomStart))
-        Text(text = "Bottom End", Modifier.align(Alignment.BottomEnd))
-        Text(text = "Bottom Center", Modifier.align(Alignment.BottomCenter))
-    }
-}*/
 
-@Composable
-fun ComposeMultisCreenApp(){
-    val navController = rememberNavController()
-    Surface(color = Color.White) {
-    SetupNavGraph(navController =navController)
+// Función para obtener los contactos del teléfono
+fun fetchContacts(context: Context): List<String> {
+    val contacts = mutableListOf<String>()
+
+    val cursor = context.contentResolver.query(
+        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+        null,
+        null,
+        null,
+        null
+    )
+    cursor?.use {
+        val nameIndex = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+        while (it.moveToNext()) {
+            val name = it.getString(nameIndex)
+            contacts.add(name)
+        }
     }
+
+    return contacts
 }
 
-@Composable
-fun SetupNavGraph(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        startDestination = "menu"
-    ) {
-        composable("menu") {
-            MenuScreen(navController)
+// Función para obtener el ID de un calendario local
+fun getCalendarId(context: Context): Long? {
+    val projection = arrayOf(
+        CalendarContract.Calendars._ID,
+        CalendarContract.Calendars.ACCOUNT_TYPE
+    )
+
+    val cursor = context.contentResolver.query(
+        CalendarContract.Calendars.CONTENT_URI,
+        projection,
+        null,
+        null,
+        null
+    )
+
+    cursor?.use {
+        val idIndex = it.getColumnIndex(CalendarContract.Calendars._ID)
+        val accountTypeIndex = it.getColumnIndex(CalendarContract.Calendars.ACCOUNT_TYPE)
+
+        while (it.moveToNext()) {
+            val accountType = if (accountTypeIndex != -1) {
+                it.getString(accountTypeIndex)
+            } else {
+                null
+            }
+            if (accountType == CalendarContract.ACCOUNT_TYPE_LOCAL) {
+                return if (idIndex != -1) {
+                    it.getLong(idIndex)
+                } else {
+                    null
+                }
+            }
         }
-        composable("home") {
-            HomeScreen(navController)
+    }
+    Log.w("CalendarDebug", "No se encontró un calendario local.")
+    return null
+}
+
+// Función para guardar el evento en el calendario
+fun saveEventToCalendar(context: Context, contact: String, startTimeInMillis: Long, endTimeInMillis: Long, calendarId: Long) {
+    val contentValues = ContentValues().apply {
+        put(CalendarContract.Events.TITLE, "Evento con $contact")
+        put(CalendarContract.Events.DTSTART, startTimeInMillis)
+        put(CalendarContract.Events.DTEND, endTimeInMillis)
+        put(CalendarContract.Events.CALENDAR_ID, calendarId)
+        put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
+    }
+
+    try {
+        val uri = context.contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues)
+        if (uri != null) {
+            Toast.makeText(context, "Evento guardado: $uri", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Error al guardar el evento", Toast.LENGTH_SHORT).show()
         }
-        composable("components") {
-            ComponentScreen(navController)
-        }
+    } catch (e: Exception) {
+        Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
     }
 }
