@@ -619,74 +619,7 @@ fun Badges(){
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DatePickers() {
-//    var showTimePicker by remember { mutableStateOf(false) }
-//    val state = rememberTimePickerState()
-//    val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
-//    val snackState = remember { SnackbarHostState() }
-//    val snackScope = rememberCoroutineScope()
-//
-//    Box(propagateMinConstraints = false) {
-//        Button(modifier = Modifier.align(Alignment.Center), onClick = { showTimePicker = true }) {
-//            Text("Set Time")
-//        }
-//        SnackbarHost(hostState = snackState)
-//    }
-//
-//    if (showTimePicker) {
-//        TimePickerDialog(
-//            onCancel = { showTimePicker = false },
-//            onConfirm = {
-//                val cal = Calendar.getInstance()
-//                cal.set(Calendar.HOUR_OF_DAY, state.hour)
-//                cal.set(Calendar.MINUTE, state.minute)
-//                cal.isLenient = false
-//                snackScope.launch {
-//                    snackState.showSnackbar("Entered time: ${formatter.format(cal.time)}")
-//                }
-//                showTimePicker = false
-//            },
-//        ) {
-//            TimeInput(state = state)
-//        }
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun TimePickers() {
-//    var selectedTime by remember { mutableStateOf("") }
-//
-//    val calendar = Calendar.getInstance()
-//    val hour = calendar.get(Calendar.HOUR_OF_DAY)
-//    val minute = calendar.get(Calendar.MINUTE)
-//
-//    // TimePickerDialog creation
-//    val timePickerDialog = TimePickerDialog(
-//        LocalContext.current,
-//        { _: TimePicker, selectedHour: Int, selectedMinute: Int ->
-//            selectedTime = "$selectedHour:${if (selectedMinute < 10) "0$selectedMinute" else selectedMinute}"
-//        }, hour, minute, true
-//    )
-//
-//    Column(
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center,
-//        modifier = Modifier.fillMaxSize().padding(16.dp)
-//    ) {
-//        Text(text = "Selected Time: $selectedTime")
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        Button(onClick = {
-//            timePickerDialog.show()
-//        }) {
-//            Text(text = "Select Time")
-//        }
-//    }
-//}
+
 @Preview(showBackground = true)
 @Composable
 fun SnackBars() {
