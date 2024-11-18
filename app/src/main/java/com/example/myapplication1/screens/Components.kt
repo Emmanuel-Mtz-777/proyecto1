@@ -99,8 +99,8 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.myapplication1.R
 import com.example.myapplication1.data.model.MenuModel
 import com.example.myapplication1.data.model.PostModel
-import com.example.myapplication1.ui.theme.components.PostCard
-import com.example.myapplication1.ui.theme.components.PostCardCompact
+import com.example.myapplication1.components.PostCard
+import com.example.myapplication1.components.PostCardCompact
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import java.util.Calendar

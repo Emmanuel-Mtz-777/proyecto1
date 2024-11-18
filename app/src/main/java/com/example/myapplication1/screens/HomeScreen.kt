@@ -1,4 +1,4 @@
-package com.example.myapplication1.ui.theme.screens
+package com.example.myapplication1.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun MenuScreen(navController: NavController){
+fun HomeScreen(navController: NavController){
     Column {
-        Text(text = "Pantalla del menu")
-        Button(onClick = {navController.navigate("components")}) {
-            
+     Text(text = "Esta es la pantalla de inicio")
+        Button(onClick = {navController.navigate("menu")}) {
+
         }
     }
 }

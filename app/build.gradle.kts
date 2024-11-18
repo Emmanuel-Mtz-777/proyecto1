@@ -62,6 +62,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.adaptive.android)
+
+    implementation("com.google.maps.android:maps-compose:2.14.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation("com.google.android.libraries.places:places:4.0.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

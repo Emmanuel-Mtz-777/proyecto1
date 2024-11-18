@@ -1,4 +1,4 @@
-package com.example.myapplication1.ui.theme.components
+package com.example.myapplication1.components
 
 
 
