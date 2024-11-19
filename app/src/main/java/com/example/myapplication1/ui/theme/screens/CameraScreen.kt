@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.myapplication1.ui.theme.camera.rememberCameraLauncher
@@ -102,11 +104,13 @@ fun CameraScreen() {
                     },
                     containerColor = MaterialTheme.colorScheme.primary,
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.cipher),
+                    Icon(
+                        imageVector = Icons.Default.Face, // Cambia el ícono por el que necesites
                         contentDescription = "Abrir cámara",
-                        modifier = Modifier.size(36.dp)  // Tamaño del ícono, puedes ajustarlo según sea necesario
+                        modifier = Modifier.size(36.dp), // Tamaño del ícono
+                        tint = Color.White // Color del ícono
                     )
+
                 }
 
                 FloatingActionButton(
