@@ -20,5 +20,5 @@ interface ApiService {
     suspend fun updateService(@Path("id")id: Int, @Body service: ServiceModel): Response<ServiceModel>
 
     @DELETE("service/{id}")
-    suspend fun deteleService(@Path("id")id: Int): Response<ServiceModel>
+    suspend fun deleteService(@Path("id")id: Int): Response<ServiceModel>
 }
