@@ -1,5 +1,6 @@
 package com.example.myapplication1
 
+import ComponentScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -60,13 +61,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication1.ui.theme.screens.HomeScreen
 import com.example.myapplication1.ui.theme.screens.MenuScreen
-import com.example.myapplication1.ui.theme.screens.ComponentsScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-
-
-
+import com.example.myapplication1.ui.theme.screens.LoginScreen
+import com.example.myapplication1.ui.theme.screens.ManageServiceScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -387,7 +386,7 @@ fun ComposeMultisCreenApp(){
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "menu"
+        startDestination = "home"
     ) {
         composable("menu") {
             MenuScreen(navController)
@@ -396,7 +395,15 @@ fun SetupNavGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable("components") {
-            ComponentsScreen(navController)
+            ComponentScreen(navController)
         }
+        composable("login") {
+            LoginScreen(navController)
+        }
+        composable("manage-service/{serviceId}"){backStackEntry->
+            val serviceId = backStackEntry.arguments?.getString("serviceId")
+            ManageServiceScreen(navController, serviceId =serviceId )
+        }
+
     }
 }
