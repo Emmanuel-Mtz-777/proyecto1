@@ -64,6 +64,8 @@ import com.example.myapplication1.ui.theme.screens.MenuScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.myapplication1.ui.theme.screens.LoginScreen
+import com.example.myapplication1.ui.theme.screens.ManageServiceScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -384,7 +386,7 @@ fun ComposeMultisCreenApp(){
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = "camera"
+        startDestination = "home"
     ) {
         composable("menu") {
             MenuScreen(navController)
@@ -394,6 +396,13 @@ fun SetupNavGraph(navController: NavHostController) {
         }
         composable("components") {
             ComponentScreen(navController)
+        }
+        composable("login") {
+            LoginScreen(navController)
+        }
+        composable("manage-service/{serviceId}"){backStackEntry->
+            val serviceId = backStackEntry.arguments?.getString("serviceId")
+            ManageServiceScreen(navController, serviceId =serviceId )
         }
 
     }

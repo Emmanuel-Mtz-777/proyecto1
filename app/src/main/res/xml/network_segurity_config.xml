@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <?xml version="1.0" encoding="utf-8"?><network-security-config>
+<network-security-config>
     <base-config cleartextTrafficPermitted="true">
-        <trust-anchors>
-        <!-- Use system certificates -->
+        <trust-anchors>            <!-- Use system certificates -->
             <certificates src="system" />
         </trust-anchors>
-    </base-config></network-security-config>
-</PreferenceScreen>
+    </base-config>
+</network-security-config>
