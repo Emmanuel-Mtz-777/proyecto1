@@ -34,115 +34,131 @@ import com.example.myapplication1.R
 
 @Composable
 fun ServiceDetailCard(
-    id:Int,
-    name:String,
-    username:String,
+    id: Int,
+    name: String,
+    username: String,
     password:String,
     description:String,
-    imageUrl:String?,
-    onEditClick: ()->Unit
+    imageURL:String?,
+    onEditClick: () -> Unit
 ){
-val clipboardManager: ClipboardManager = LocalClipboardManager.current
-Column {
-    Row (
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .padding(10.dp),
-        Arrangement.Absolute.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        AsyncImage(
+    val clipboardManager : ClipboardManager = LocalClipboardManager.current
+    Column {
+        Row(
             modifier = Modifier
-                .width(100.dp)
-                .height(100.dp),
-            model = imageUrl,
-            error = painterResource(id = R.drawable.ic_launcher_background),
-            contentDescription = "Service Logo",
-            contentScale = ContentScale.FillBounds)
-        Text(text = name,
-            color = colorResource(R.color.teal_700),
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold)
-        Row (
-            modifier = Modifier,
-            Arrangement.End
+                .fillMaxWidth()
+                .height(120.dp)
+                .padding(10.dp),
+            Arrangement.Absolute.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ){
+            AsyncImage(
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(100.dp),
+                model = imageURL,
+                error = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = "Service logo",
+                contentScale = ContentScale.FillBounds
+            )
+            Text(
+                text = name,
+                color = colorResource(id = R.color.purple_500),
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Row(
+                modifier = Modifier,
+                Arrangement.End
+            ){
+                IconButton(
+                    modifier = Modifier.padding(20.dp,0.dp,0.dp,0.dp),
+                    onClick = { onEditClick() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = "Select date"
+                    )
+                }
+            }
+
+        }
+        HorizontalDivider()
+        Row(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
+            Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "Username: ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                text = username,
+                fontSize = 18.sp,
+                color = Color.Gray,
+                fontWeight = FontWeight.Medium
+            )
             IconButton(
                 modifier = Modifier.padding(20.dp,0.dp,0.dp,0.dp),
-                onClick = { onEditClick()}) {
-                Icon(imageVector = Icons.Filled.Edit, contentDescription = "Select date")
-
+                onClick = { clipboardManager.setText(AnnotatedString(username)) }) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Copy username"
+                )
+            }
+        }
+        HorizontalDivider()
+        Row(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
+            Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "Password: ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                text = "**********",
+                fontSize = 18.sp,
+                color = Color.LightGray,
+                fontWeight = FontWeight.Medium
+            )
+            IconButton(
+                modifier = Modifier.padding(20.dp,0.dp,0.dp,0.dp),
+                onClick = { clipboardManager.setText(AnnotatedString(password)) }) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Copy password"
+                )
             }
         }
 
-    }
-    HorizontalDivider()
-    Row(
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth(),
-        Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Text(text = "username: ",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium)
-
-        Text(text = username,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.LightGray)
-
-        IconButton(modifier = Modifier.padding(20.dp, 0.dp,0.dp,0.dp),
-            onClick = {clipboardManager.setText(AnnotatedString(username))}) {
-
-            Icon(imageVector =Icons.Default.Share , contentDescription = "Copy username")
-
-        }
-    }
-    HorizontalDivider()
-    Row(
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth(),
-        Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Text(text = "**************",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium)
-
-        Text(text = password,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.LightGray)
-
-        IconButton(modifier = Modifier.padding(20.dp, 0.dp,0.dp,0.dp),
-            onClick = {clipboardManager.setText(AnnotatedString(password))}) {
-
-            Icon(imageVector =Icons.Default.Share , contentDescription = "Copy password")
-
-        }
-    }
-    HorizontalDivider()
-    Row(
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth(),
-        Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Text(text = "description",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium)
-
-        Text(text = description,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color.LightGray)
-
-
+        HorizontalDivider()
+        Row(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
+            Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "Description: ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                text = description,
+                fontSize = 18.sp,
+                color = Color.LightGray,
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }
