@@ -24,15 +24,21 @@ fun TopBar(title:String, navController: NavController, backButton:Boolean){
         title = {
             Text(title)
         },
-        navigationIcon = { if(backButton){
-            IconButton(onClick ={navController.navigateUp()}){
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = "Go to previous screen",
-                    tint = Color.White
-                )
+        navigationIcon = {
+            if (backButton) {
+                IconButton(onClick = {
+                    // Solo navegar hacia atrás si no estamos en la pantalla principal
+                    if (navController.previousBackStackEntry != null) {
+                        navController.navigateUp()
+                    }
+                }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                        contentDescription = "Go to previous screen",
+                        tint = Color.White
+                    )
+                }
             }
-        }
         },
     )
 }

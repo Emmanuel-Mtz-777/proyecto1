@@ -7,7 +7,7 @@ object DatabaseProvider {
     private var instance: AppDatabase? = null
 
     fun getDatabase(context: Context): AppDatabase{
-        return instance ?: synchronized(this){
+        return instance?: synchronized(this){
             val db = Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java, "app-db"
@@ -17,4 +17,3 @@ object DatabaseProvider {
         }
     }
 }
-
